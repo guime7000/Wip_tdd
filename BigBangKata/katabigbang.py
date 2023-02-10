@@ -1,6 +1,6 @@
 def is_multiple_of(inInt: int, divisor: int) -> bool :
     """
-    Returns true if inInt is a multiple of divisor, Flase otherwise
+    Returns true if inInt is a multiple of divisor, False otherwise
     """
     isMultiple = False
     if inInt % divisor == 0 :
@@ -13,6 +13,8 @@ def bigbang(inInt : int) -> str :
     Returns a specific string given conditions on the inInt integer parameter.
     """
 
+    # Dictionnary to map a divisor and the output word associated to it
+    # dict item -> divisor : associated_word
     divisorMapping = {5 : "big",
                     7 : "bang",
                     11 : "boom"}
