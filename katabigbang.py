@@ -11,6 +11,9 @@ def bigbang(inInt : int) -> str :
     if inInt%11 == 0:
         outList.append("boom")
 
+    if len(outList) == 0 :
+        outList.append(str(inInt))
+
     if inInt%2 == 0:
         outList.reverse()
 
