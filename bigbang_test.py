@@ -10,4 +10,5 @@ def test_bigbang_multiple_of_7()-> None:
 
 def test_bigbang_multiple_of_33()-> None:
     """Tests if a multiple of 11 is returned as big"""
-    assert bigbang(21) == "bang"    
+    assert bigbang(33) == "boom"    
+

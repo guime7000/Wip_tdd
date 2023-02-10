@@ -8,5 +8,7 @@ def bigbang(inInt : int) -> str :
     if inInt%7 == 0:
         outList.append("bang")
 
-        
+    if inInt%11 == 0:
+        outList.append("boom")
+
     return "".join(outList)
