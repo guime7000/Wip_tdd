@@ -8,7 +8,7 @@ def test_bigbang_multiple_of_7()-> None:
     """Tests if a multiple of 7 is returned as big"""
     assert bigbang(21) == "bang"
 
-def test_bigbang_multiple_of_33()-> None:
+def test_bigbang_multiple_of_11()-> None:
     """Tests if a multiple of 11 is returned as big"""
     assert bigbang(33) == "boom"    
 
@@ -25,9 +25,9 @@ def test_bigbang_multiple_of_11_2() -> None:
     assert bigbang(110) == "boombig"
 
 def test_bigbang_odd_non_multiple() -> None:
-    """ Tests if an odd integer not multiple of 5, 7 or 11 returns its value"""
+    """ Tests if an odd integer NOT multiple of 5, 7 or 11 returns its value"""
     assert bigbang(3) == "3"    
 
 def test_bigbang_even_non_multiple() -> None:
-    """ Tests if an even integer not multiple of 5, 7 or 11 returns its value"""
+    """ Tests if an even integer NOT multiple of 5, 7 or 11 returns its value"""
     assert bigbang(2) == "2"    
