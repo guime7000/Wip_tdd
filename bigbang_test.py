@@ -19,3 +19,7 @@ def test_bigbang_multiple_of_5_7_11() -> None :
 def test_bigbang_multiple_of_5_2() -> None:
     """ Tests if a multiple of 5 AND 2 returns big"""
     assert bigbang(10) == "big"
+
+def test_bigbang_multiple_of_11_2() -> None:
+    """ Tests if a multiple of 11 AND 2 returns big"""
+    assert bigbang(110) == "boombig"
