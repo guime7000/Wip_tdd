@@ -1,4 +1,13 @@
-from katabigbang import bigbang
+from katabigbang import bigbang, is_multiple_of
+
+def test_is_multiple_of_3_and_5() -> None :
+    """Returns False as 3 is not a multiple of 5"""
+    assert is_multiple_of(3,5) == False
+
+def test_is_multiple_of_14_and_7() -> None :
+    """Returns True as 14 is a multiple of 7"""
+    assert is_multiple_of(14,7) == True
+
 
 def test_bigbang_multiple_of_5()-> None:
     """Tests if a multiple of 5 is returned as big"""

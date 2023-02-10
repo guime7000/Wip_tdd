@@ -1,26 +1,32 @@
+def is_multiple_of(inInt: int, divisor: int) -> bool :
+    """
+    Returns true if inInt is a multiple of divisor, Flase otherwise
+    """
+    isMultiple = False
+    if inInt % divisor == 0 :
+        isMultiple = True
+    
+    return isMultiple
+
 def bigbang(inInt : int) -> str :
     """
     Returns a specific string given conditions on the inInt integer parameter.
     """
+
+    divisorMapping = {5 : "big",
+                    7 : "bang",
+                    11 : "boom"}
     outList = []
 
-    if inInt%5 == 0: 
-        # inInt is multiple of 5
-        outList.append("big")
-    
-    if inInt%7 == 0: 
-        # inInt is multiple of 7
-        outList.append("bang")
-
-    if inInt%11 == 0: 
-        # inInt is multiple of 11
-        outList.append("boom")
+    for key in divisorMapping.keys():
+        if is_multiple_of(inInt, key):
+            outList.append(divisorMapping[key])
 
     if len(outList) == 0 : 
         # inInt is not a multiple of 5, 7 or 11
         outList.append(str(inInt))
 
-    if inInt%2 == 0:
+    if is_multiple_of(inInt, 2):
         #inInt is even
         outList.reverse()
 
