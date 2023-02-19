@@ -1,59 +1,59 @@
-def is_multiple_of(inInt: int, divisor: int) -> bool :
+def is_multiple_of(testedNumber: int, divisor: int) -> bool :
     """
-    Returns true if inInt is a multiple of divisor, False otherwise
+    Returns true if testedNumber is a multiple of divisor, False otherwise
     """
-    return inInt % divisor == 0
+    return testedNumber % divisor == 0
 
 def divisor_mapping() -> dict :
     """
     Returns a dict containing pairs of divisor / corresponding word
 
-    Modify outDict as you wish to fit your needs in bigbang function :
-    each key / value pair of the dict corresponds to an int value as key (divisor) and a string as value 
+    Modify divisorMap as you wish to fit your needs in bigbang function :
+    each key / value pair of the dictionnary corresponds to an int value as key (divisor) and a string as value 
     """
-    outDict = {5 : "big",
+    divisorMap = {5 : "big",
                 7 : "bang",
                 11 : "boom"}
 
-    return outDict
+    return divisorMap
 
-def create_word_list(inInt: int, inDict : dict) -> list :
+def create_word_list(testedNumber: int, wordMap : dict) -> list :
     """
-    Checks if an inInt integer value is a multiple of some divisors.
-    If so, appends a specific word to a list the fucntion will return
+    Checks if a testedNumber value is a multiple of some divisors.
+    If so, appends a specific word to a WordList list 
+    Then returns the WordList
     """
-    outList = []
-    for key in inDict.keys():
-        if is_multiple_of(inInt, key):
-            outList.append(inDict[key])
+    wordList = []
+    for key in wordMap.keys():
+        if is_multiple_of(testedNumber, key):
+            wordList.append(wordMap[key])
 
-    return outList
+    return wordList
 
-def reverse_word_list(inInt: int, divisor: int, inList: list) -> list :
+def reverse_word_list(testedNumber: int, divisor: int, wordList: list) -> list :
     """
-    Returns a reversed inList if inInt is a multiple of divisor
-    Returns inList otherwise
+    Returns a reversed wordList if testedNumber is a multiple of divisor
+    Returns wordList otherwise
     """
-    if is_multiple_of(inInt, divisor):
-        inList.reverse()
+    if is_multiple_of(testedNumber, divisor):
+        wordList.reverse()
     
-    return inList
+    return wordList
 
 
-def bigbang(inInt : int) -> str :
+def bigbang(testedNumber : int) -> str :
     """
-    Returns a specific string given conditions on the inInt integer parameter.
+    Returns a specific string given conditions on the testedNumber integer parameter.
     """
 
-    # Dictionnary to map a divisor and the output word associated to it
     divisorMapping = divisor_mapping()
 
-    outList = create_word_list(inInt, divisorMapping)
+    outList = create_word_list(testedNumber, divisorMapping)
 
-    outList = reverse_word_list(inInt, 2, outList)
+    outList = reverse_word_list(testedNumber, 2, outList)
 
     if len(outList) == 0 : 
         # inInt is not a multiple of 5, 7 or 11
-        outList.append(str(inInt))
+        return str(testedNumber)
 
     return "".join(outList)
