@@ -1,4 +1,8 @@
-from stringcalculator_stage0 import calculate, rewrite_empty_expression
+from stringcalculator_stage0 import (
+    calculate,
+    rewrite_empty_expression,
+    split_expression,
+)
 
 
 ############## rewrite_empty_expression #######################
@@ -9,7 +13,15 @@ def test_rewrite_empty_expression() -> None:
 
 def test_rewrite_empty_expression() -> None:
     """Doesn't do anything to input if input string's length > 0"""
-    assert rewrite_empty_expression("123") == "123"
+    assert rewrite_empty_expression("123,456") == "123,456"
+
+
+############### split_expression #############################
+def test_split_comma_separated_expression() -> None:
+    """
+    Splits a string around comma delimiters
+    """
+    assert split_expression("1,2,3") == ["1", "2", "3"]
 
 
 ################ calculate ####################################
@@ -41,3 +53,8 @@ def test_calculate_3_comma_sep_Args() -> None:
 def test_calculate_5_comma_sep_Args() -> None:
     """5 comma separated args as entry ("1,2,3,4,5"), returns 15 (= 1 + 2 + 3 + 4 + 5)"""
     assert calculate("1,2,3,4,5") == 15
+
+
+def test_calculate_tt_delimiter_with_3_sep_Args_() -> None:
+    """3 comma separated args as entry ("1,2,3"), returns 6 (= 1 + 2 + 3)"""
+    assert calculate("1t2t3", "t") == 6
