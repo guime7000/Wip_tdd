@@ -17,7 +17,8 @@ def calculate(expression: str) -> int:
         temp_stringed_int = ""
         for idx in range(expressionLength):
             digit = expression[idx]
-            temp_stringed_int += digit
+            if digit != ",":
+                temp_stringed_int += digit
             if digit == "," or idx == expressionLength - 1:
                 integerList.append(temp_stringed_int)
                 integerList.append(digit)
