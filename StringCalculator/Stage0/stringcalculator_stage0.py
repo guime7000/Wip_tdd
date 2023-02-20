@@ -37,6 +37,4 @@ def calculate(expression: str, delimiter: str = ",") -> int:
 
     integerSplit = split_expression(expression)
 
-    calculatedSum = sum(integerSplit)
-
-    return calculatedSum
+    return sum(integerSplit)
