@@ -21,7 +21,7 @@ def test_split_comma_separated_expression() -> None:
     """
     Splits a string around comma delimiters
     """
-    assert split_expression("1,2,3") == ["1", "2", "3"]
+    assert split_expression("1,2,3") == [1, 2, 3]
 
 
 ################ calculate ####################################
