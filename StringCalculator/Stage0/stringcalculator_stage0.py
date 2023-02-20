@@ -4,7 +4,13 @@ def calculate(expression: str) -> int:
     """
     calculatedSum = 0
 
-    if len(expression) != 0:
-        calculatedSum = int(expression)
+    if len(expression) == 0:
+        return 0
+
+    else:
+        for elem in expression:
+            if elem != ",":
+                elem += elem
+            calculatedSum += int(elem)
 
     return calculatedSum
