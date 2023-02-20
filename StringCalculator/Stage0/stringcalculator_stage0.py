@@ -4,4 +4,7 @@ def calculate(expression: str) -> int:
     """
     calculatedSum = 0
 
+    if len(expression) != 0:
+        calculatedSum = int(expression)
+
     return calculatedSum
