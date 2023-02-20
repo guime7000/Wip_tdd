@@ -10,5 +10,13 @@ def calculate(expression: str) -> int:
     else:
         if expression[-1] != ",":
             calculatedSum += int(expression)
+            return calculatedSum
+
+        temp_stringed_int = ""
+        for digit in expression:
+            temp_stringed_int += digit
+            if digit == ",":
+                calculatedSum += int(temp_stringed_int)
+                temp_stringed_int = ""
 
     return calculatedSum
