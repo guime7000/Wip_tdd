@@ -1,4 +1,15 @@
-from stringcalculator_stage0 import calculate
+from stringcalculator_stage0 import calculate, rewrite_empty_expression
+
+
+############## rewrite_empty_expression #######################
+def test_rewrite_empty_expression() -> None:
+    """Returns "0" if input is an empty string"""
+    assert rewrite_empty_expression("") == "0"
+
+
+def test_rewrite_empty_expression() -> None:
+    """Doesn't do anything to input if input string's length > 0"""
+    assert rewrite_empty_expression("123") == "123"
 
 
 ################ calculate ####################################
