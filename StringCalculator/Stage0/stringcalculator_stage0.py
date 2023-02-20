@@ -8,9 +8,7 @@ def calculate(expression: str) -> int:
         return 0
 
     else:
-        for elem in expression:
-            if elem != ",":
-                elem += elem
-            calculatedSum += int(elem)
+        if expression[-1] != ",":
+            calculatedSum += int(expression)
 
     return calculatedSum
