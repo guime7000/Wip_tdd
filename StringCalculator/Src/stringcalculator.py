@@ -1,4 +1,4 @@
-def check_expresssion_validity(expression: str) -> str:
+def check_expresssion_validity(expression: list) -> str:
     """
     Input expression validity checker !
     Raises an error <with specific message in case of invalidity
@@ -6,11 +6,11 @@ def check_expresssion_validity(expression: str) -> str:
 
     # Checks if expression is starting with anything else than a digit
     if ord(expression[0]) < 48 or ord(expression[0]) > 57:
-        raise SyntaxError(f"Invalid expression: '{expression}'")
+        raise SyntaxError(f"Invalid expression: '{''.join(expression)}'")
 
     # Checks if expression is ending with anything else than a digit
     if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
-        raise SyntaxError(f"Invalid expression: '{expression}'")
+        raise SyntaxError(f"Invalid expression: '{''.join(expression)}'")
 
 
 def rewrite_empty_expression(expression: str) -> bool:
@@ -24,10 +24,12 @@ def rewrite_empty_expression(expression: str) -> bool:
     return expression
 
 
-def extract_delimiter(expression: str) -> str:
+def extract_delimiters(expression: str) -> str:
     """
-    Extracts a specific delimiter, different from a comma, from the input expression
+    Extracts one or more user specified delimiter(s) from the input expression
+    and rewrites expression by replacing user defined delimiters by commas
     """
+
     delimiter = ","
 
     return delimiter
@@ -39,7 +41,8 @@ def split_expression(expression: str) -> list:
     Returns a list of integer
     """
 
-    delimiter = extract_delimiter(expression)
+    # delimiter = extract_delimiter(expression)
+    delimiter = ","
 
     temp_integer = ""
     integerSplit = []
@@ -63,10 +66,19 @@ def calculate(expression: str) -> int:
 
     expression = rewrite_empty_expression(expression)
 
+    expression = list(expression)
+    print(expression)
+    if expression[0] == "/":
+        delimiter = expression[2]
+        expression = expression[4:]
+        print(expression)
+        for i, elem in enumerate(expression):
+            if elem == delimiter:
+                expression[i] = ","
+    print(expression)
+
     try:
         check_expresssion_validity(expression)
-
-        expression = list(expression)
 
         integerSplit = split_expression(expression)
 
