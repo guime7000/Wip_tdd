@@ -1,5 +1,5 @@
 from stringcalculator import (
-    check_expresssion_validity,
+    check_expression_validity,
     rewrite_empty_expression,
     split_expression,
     calculate,
@@ -76,5 +76,13 @@ def test_calculate_invalid_START_comma_expression() -> None:
     assert calculate(",1") == "Invalid expression: ',1'"
 
 
+def test_calculate_invalid_user_def_delimiter_expression() -> None:
+    assert calculate("//;\n102,5") == "Invalid expression: '//;\n102,5'"
+
+
 def test_calculate_user_def_1_char_delimiter() -> None:
     assert calculate("//@\n10@20@30") == 60
+
+
+# def test_calculate_negative_numbers() -> None:
+#     assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"

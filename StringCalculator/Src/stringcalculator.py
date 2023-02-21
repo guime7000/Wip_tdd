@@ -1,19 +1,32 @@
-def check_expresssion_validity(expression: list) -> str:
+def check_expression_validity(expression: list, delimiter: str = ",") -> str:
     """
     Input expression validity checker !
     Raises an error <with specific message in case of invalidity
     """
 
     # Checks if expression is starting with anything else than a digit
-    if ord(expression[0]) < 48 or ord(expression[0]) > 57:
-        raise SyntaxError(f"Invalid expression: '{''.join(expression)}'")
+    if (expression[0] != "/") and (ord(expression[0]) < 48 or ord(expression[0]) > 57):
+        raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
 
     # Checks if expression is ending with anything else than a digit
     if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
-        raise SyntaxError(f"Invalid expression: '{''.join(expression)}'")
+        raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
+
+    # Checks if there is only user specified 1 char long delimiter in expression
+    if expression[0] == "/":
+        for digit in expression[4:]:
+            if (
+                (str.isdigit(digit) == False)
+                and (ord(digit) != 10)
+                and (digit != delimiter)
+            ):
+                print(digit)
+                raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
+
+    # Checks if there are negative numbers
 
 
-def rewrite_empty_expression(expression: str) -> bool:
+def rewrite_empty_expression(expression: list) -> bool:
     """
     returns "0" if the length of expression equals 0
     """
@@ -29,26 +42,40 @@ def extract_delimiters(expression: str) -> str:
     Extracts one or more user specified delimiter(s) from the input expression
     and rewrites expression by replacing user defined delimiters by commas
     """
-
-    delimiter = ","
+    # if expression[0] == "/":
+    delimiter = expression[2]
+    # shrinkedExpression = expression[4:]
+    # else:
+    #     delimiter = ","
+    #     shrinkedExpression = expression
 
     return delimiter
 
 
-def split_expression(expression: str) -> list:
+def shrink_expression(expression: list) -> list:
+    """
+    Rewrites input expression if a user specified delimiter is given by popping out
+    delimiter definition :
+
+    "//@\n1@2" becomes "1@2"
+    """
+    if expression[0] == "/":
+        return expression[4:]
+    else:
+        return expression
+
+
+def split_expression(expression: str, delimiter: str = ",") -> list:
     """
     Splits input expression according to the given delimiter.
     Returns a list of integer
     """
 
-    # delimiter = extract_delimiter(expression)
-    delimiter = ","
-
     temp_integer = ""
     integerSplit = []
     for idx in range(len(expression)):
         if expression[idx] == "\n":
-            expression[idx] = ","
+            expression[idx] = delimiter
         digit = expression[idx]
         if digit != delimiter:
             temp_integer += digit
@@ -63,26 +90,25 @@ def calculate(expression: str) -> int:
     """
     Returns the sum of integers written in expression
     """
+    expression = list(expression)
 
     expression = rewrite_empty_expression(expression)
 
-    expression = list(expression)
-    print(expression)
     if expression[0] == "/":
-        delimiter = expression[2]
-        expression = expression[4:]
-        print(expression)
-        for i, elem in enumerate(expression):
-            if elem == delimiter:
-                expression[i] = ","
-    print(expression)
+        delimiter = extract_delimiters(expression)
+    else:
+        delimiter = ","
 
     try:
-        check_expresssion_validity(expression)
-
-        integerSplit = split_expression(expression)
-
+        # print(expression, delimiter)
+        check_expression_validity(expression, delimiter)
+        expression = shrink_expression(expression)
+        print(expression, delimiter)
+        integerSplit = split_expression(expression, delimiter)
         return sum(integerSplit)
 
     except SyntaxError as err:
         return err.args[0]
+
+
+print(calculate("//;\n102,5"))
