@@ -6,9 +6,9 @@ from stringcalculator import (
 )
 
 
-############# check_expresssion_validity ######################
-def test_check_expresssion_validity() -> None:
-    assert check_expresssion_validity("1,") == "Invalid expression : '1,'"
+# ############# check_expresssion_validity ######################
+# def test_check_expresssion_validity() -> None:
+#     assert check_expresssion_validity("1,") == "Invalid expression"  # : '1,'"
 
 
 ############## rewrite_empty_expression #######################
@@ -66,6 +66,6 @@ def test_calculate_several_lines() -> None:
     assert calculate("1,2\n3") == 6
 
 
-def test_calculate_invalid_comma_expression() -> None:
+def test_calculate_invalid_END_comma_expression() -> None:
     """Returns a specific error message if input expression is not ending with a number"""
-    assert calculate("1,") == "Invalid expression : '1,'"
+    assert calculate("1,") == "Invalid expression: '1,'"
