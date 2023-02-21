@@ -65,6 +65,9 @@ def calculate(expression: str) -> int:
     try:
         expression = rewrite_empty_expression(expression)
 
+        if ord(expression[0]) < 48 or ord(expression[0]) > 57:
+            raise SyntaxError(f"Invalid expression: '{expression}'")
+
         if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
             raise SyntaxError(f"Invalid expression: '{expression}'")
 
