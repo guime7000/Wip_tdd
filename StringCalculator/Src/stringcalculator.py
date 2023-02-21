@@ -24,7 +24,7 @@ def check_expression_validity(expression: list, delimiter: str = ",") -> str:
                 raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
 
 
-def check_negative_numbers(expression: str) -> str:
+def check_negative_numbers(expression: list) -> str:
     """
     Checks if there are negative numbers in the input expression
     calculate("5,-4,1,-2") returns "negatives not allowed: -4, -2"
@@ -94,6 +94,18 @@ def split_expression(expression: str, delimiter: str = ",") -> list:
     return list(map(int, integerSplit))
 
 
+def keep_lesser_than_limit(expression: list, limit: int = 1000) -> list:
+    """
+    Will return expression without integers greater than limit
+    """
+    keptIntegers = [i for i in expression if i <= limit]
+
+    if len(keptIntegers) == 0:
+        keptIntegers = [0]
+
+    return keptIntegers
+
+
 def calculate(expression: str) -> int:
     """
     Returns the sum of integers written in expression
@@ -109,9 +121,19 @@ def calculate(expression: str) -> int:
 
     try:
         check_expression_validity(expression, delimiter)
+
         expression = shrink_expression(expression)
+
         integerSplit = split_expression(expression, delimiter)
+
+        # print(integerSplit)
+
         check_negative_numbers(integerSplit)
+
+        integerSplit = keep_lesser_than_limit(integerSplit)
+
+        # print(integerSplit)
+
         return sum(integerSplit)
 
     except SyntaxError as err:
@@ -121,4 +143,4 @@ def calculate(expression: str) -> int:
         return err.args[0]
 
 
-print(calculate("//;\n102,5"))
+print(calculate("1001,1000"))
