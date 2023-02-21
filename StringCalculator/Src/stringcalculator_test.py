@@ -69,3 +69,8 @@ def test_calculate_several_lines() -> None:
 def test_calculate_invalid_END_comma_expression() -> None:
     """Returns a specific error message if input expression is not ending with a number"""
     assert calculate("1,") == "Invalid expression: '1,'"
+
+
+def test_calculate_invalid_START_comma_expression() -> None:
+    """Returns a specific error message if input expression is not ending with a number"""
+    assert calculate("1,") == "Invalid expression: ',1'"
