@@ -53,3 +53,8 @@ def test_calculate_3_comma_sep_Args() -> None:
 def test_calculate_5_comma_sep_Args() -> None:
     """5 comma separated args as entry ("1,2,3,4,5"), returns 15 (= 1 + 2 + 3 + 4 + 5)"""
     assert calculate("1,2,3,4,5") == 15
+
+
+def test_calculate_several_lines() -> None:
+    """Includes test of an expression containing \n instruction"""
+    assert calculate("1,2\n3") == 6
