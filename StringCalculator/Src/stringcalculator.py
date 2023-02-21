@@ -3,13 +3,14 @@ def check_expresssion_validity(expression: str) -> str:
     Input expression validity checker !
     Raises an error <with specific message in case of invalidity
     """
-    pass
-    # try:
-    #     if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
-    #         raise SyntaxError(f"Invalid expression: '{expression}'")
 
-    # except SyntaxError as err:
-    #     return err.args[0]
+    # Checks if expression is starting with anything else than a digit
+    if ord(expression[0]) < 48 or ord(expression[0]) > 57:
+        raise SyntaxError(f"Invalid expression: '{expression}'")
+
+    # Checks if expression is ending with anything else than a digit
+    if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
+        raise SyntaxError(f"Invalid expression: '{expression}'")
 
 
 def rewrite_empty_expression(expression: str) -> bool:
@@ -60,16 +61,10 @@ def calculate(expression: str) -> int:
     Returns the sum of integers written in expression
     """
 
-    # try:
+    expression = rewrite_empty_expression(expression)
 
     try:
-        expression = rewrite_empty_expression(expression)
-
-        if ord(expression[0]) < 48 or ord(expression[0]) > 57:
-            raise SyntaxError(f"Invalid expression: '{expression}'")
-
-        if ord(expression[-1]) < 48 or ord(expression[-1]) > 57:
-            raise SyntaxError(f"Invalid expression: '{expression}'")
+        check_expresssion_validity(expression)
 
         expression = list(expression)
 
