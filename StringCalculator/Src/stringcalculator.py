@@ -9,11 +9,22 @@ def rewrite_empty_expression(expression: str) -> bool:
     return expression
 
 
-def split_expression(expression: str, delimiter: str = ",") -> list:
+def extract_delimiter(expression: str) -> str:
+    """
+    Extracts a specific delimiter, different from a comma, from the input expression
+    """
+    delimiter = ","
+
+    return delimiter
+
+
+def split_expression(expression: str) -> list:
     """
     Splits input expression according to the given delimiter.
     Returns a list of integer
     """
+
+    delimiter = extract_delimiter(expression)
 
     temp_integer = ""
     integerSplit = []
@@ -28,7 +39,7 @@ def split_expression(expression: str, delimiter: str = ",") -> list:
     return list(map(int, integerSplit))
 
 
-def calculate(expression: str, delimiter: str = ",") -> int:
+def calculate(expression: str) -> int:
     """
     Returns the sum of integers written in expression
     """
