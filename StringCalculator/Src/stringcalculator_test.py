@@ -84,5 +84,5 @@ def test_calculate_user_def_1_char_delimiter() -> None:
     assert calculate("//@\n10@20@30") == 60
 
 
-# def test_calculate_negative_numbers() -> None:
-#     assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"
+def test_calculate_negative_numbers() -> None:
+    assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"
