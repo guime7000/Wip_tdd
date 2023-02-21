@@ -32,9 +32,11 @@ def check_negative_numbers(expression: str) -> str:
     negativeNumbers = []
     for digit in expression:
         if digit < 0:
-            negativeNumbers.append(digit)
+            negativeNumbers.append(str(digit))
     if len(negativeNumbers) != 0:
-        raise ArithmeticError(f"negatives not allowed")
+        raise ArithmeticError(
+            f'negatives not allowed: {str(", ".join(negativeNumbers))}'
+        )
 
 
 def rewrite_empty_expression(expression: list) -> bool:
