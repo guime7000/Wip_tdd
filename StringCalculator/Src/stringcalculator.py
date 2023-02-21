@@ -23,7 +23,18 @@ def check_expression_validity(expression: list, delimiter: str = ",") -> str:
                 print(digit)
                 raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
 
-    # Checks if there are negative numbers
+
+def check_negative_numbers(expression: str) -> str:
+    """
+    Checks if there are negative numbers in the input expression
+    calculate("5,-4,1,-2") returns "negatives not allowed: -4, -2"
+    """
+    negativeNumbers = []
+    for digit in expression:
+        if digit < 0:
+            negativeNumbers.append(digit)
+    if len(negativeNumbers) != 0:
+        raise ArithmeticError(f"negatives not allowed")
 
 
 def rewrite_empty_expression(expression: list) -> bool:
@@ -42,12 +53,7 @@ def extract_delimiters(expression: str) -> str:
     Extracts one or more user specified delimiter(s) from the input expression
     and rewrites expression by replacing user defined delimiters by commas
     """
-    # if expression[0] == "/":
     delimiter = expression[2]
-    # shrinkedExpression = expression[4:]
-    # else:
-    #     delimiter = ","
-    #     shrinkedExpression = expression
 
     return delimiter
 
@@ -100,14 +106,16 @@ def calculate(expression: str) -> int:
         delimiter = ","
 
     try:
-        # print(expression, delimiter)
         check_expression_validity(expression, delimiter)
         expression = shrink_expression(expression)
-        print(expression, delimiter)
         integerSplit = split_expression(expression, delimiter)
+        check_negative_numbers(integerSplit)
         return sum(integerSplit)
 
     except SyntaxError as err:
+        return err.args[0]
+
+    except ArithmeticError as err:
         return err.args[0]
 
 
