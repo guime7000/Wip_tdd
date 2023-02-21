@@ -29,6 +29,8 @@ def split_expression(expression: str) -> list:
     temp_integer = ""
     integerSplit = []
     for idx in range(len(expression)):
+        if expression[idx] == "\n":
+            expression[idx] = ","
         digit = expression[idx]
         if digit != delimiter:
             temp_integer += digit
@@ -43,6 +45,8 @@ def calculate(expression: str) -> int:
     """
     Returns the sum of integers written in expression
     """
+
+    expression = list(expression)
 
     expression = rewrite_empty_expression(expression)
 
