@@ -1,3 +1,15 @@
+def check_expresssion_validity(expression: str) -> str:
+    """
+    Input expression validity checker !
+    Raises an error <with specific message in case of invalidity
+    """
+    try:
+        return "BLABLA"
+    except:
+        if expression == "0":
+            raise Exception(f'Invalid expression: {"".join(expression)}')
+
+
 def rewrite_empty_expression(expression: str) -> bool:
     """
     returns "0" if the length of expression equals 0
