@@ -74,3 +74,7 @@ def test_calculate_invalid_END_comma_expression() -> None:
 def test_calculate_invalid_START_comma_expression() -> None:
     """Returns a specific error message if input expression is not ending with a number"""
     assert calculate(",1") == "Invalid expression: ',1'"
+
+
+def test_calculate_user_def_1_char_delimiter() -> None:
+    assert calculate("//;\n1;2\n3") == 6
