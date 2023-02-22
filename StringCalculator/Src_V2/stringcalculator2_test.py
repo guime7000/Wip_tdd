@@ -20,3 +20,8 @@ def test_calculate_2_nb() -> None:
 def test_calculate_3_nb() -> None:
     assert calculate("1,2,4") == 7
     assert calculate("10,20,40") == 70
+    assert calculate("120,25,300") == 445
+
+
+def test_calculate_4_nb() -> None:
+    assert calculate("1,2,4,100") == 107

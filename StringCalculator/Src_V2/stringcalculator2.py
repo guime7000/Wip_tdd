@@ -12,20 +12,12 @@ def calculate(expression: str) -> int:
     else:
         totalSum = int(expression[: delimiterIndex[0]])
 
-        if len(delimiterIndex) == 1:
-            i = 0
-            totalSum = int(expression[: delimiterIndex[i]])
-            totalSum = totalSum + int(expression[delimiterIndex[i] + 1 :])
-
-        if len(delimiterIndex) == 2:
-            i = 0
-            totalSum = int(expression[: delimiterIndex[i]])
-            totalSum = totalSum + int(
-                expression[delimiterIndex[i] + 1 : delimiterIndex[i + 1]]
-            )
-            i = 1
-            totalSum = totalSum + int(expression[delimiterIndex[i] + 1 :])
+        for i in range(len(delimiterIndex)):
+            if i == len(delimiterIndex) - 1:
+                totalSum = totalSum + int(expression[delimiterIndex[i] + 1 :])
+            else:
+                totalSum = totalSum + int(
+                    expression[delimiterIndex[i] + 1 : delimiterIndex[i + 1]]
+                )
 
     return totalSum
-
-    # return int(expression)
