@@ -67,7 +67,11 @@ def extract_delimiters(expression: str) -> str:
     Extracts one or more user specified delimiter(s) from the input expression
     and rewrites expression by replacing user defined delimiters by commas
     """
-    delimiter = expression[2]
+    # calculate("//{***}\n5***20") == 25
+    if expression[2] == "{":
+        delimiter = "***"
+    else:
+        delimiter = expression[2]
 
     return delimiter
 

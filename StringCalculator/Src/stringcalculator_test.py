@@ -1,4 +1,5 @@
 from stringcalculator import (
+    extract_delimiters,
     check_expression_validity,
     rewrite_empty_expression,
     split_expression,
@@ -101,6 +102,10 @@ def test_calculate_limit_integer() -> None:
 
 
 # def test_calculate_less_and_great_than_1000() -> None:
+
+
+def test_extract_delimiters() -> None:
+    assert extract_delimiters("//{***}\n5***20") == "***"
 
 
 def test_calculate_variable_length_delimiter() -> None:
