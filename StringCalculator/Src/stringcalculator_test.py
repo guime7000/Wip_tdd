@@ -36,14 +36,13 @@ def test_calculate_empty_string() -> None:
     assert calculate("") == 0
 
 
-def test_calculate_1_Arg_eq_0() -> None:
-    """1 argument equals to 0 returns 0"""
+def test_calculate_1_Arg() -> None:
     assert calculate("0") == 0
-
-
-def test_calculate_1_Arg_eq_123() -> None:
-    """1 argument equals to 123 returns 123"""
     assert calculate("123") == 123
+
+
+# def test_calculate_1_Arg_eq_123() -> None:
+#     """1 argument equals to 123 returns 123"""
 
 
 def test_calculate_2_comma_sep_Args() -> None:
@@ -66,14 +65,14 @@ def test_calculate_several_lines() -> None:
     assert calculate("1,2\n3") == 6
 
 
-def test_calculate_invalid_END_comma_expression() -> None:
-    """Returns a specific error message if input expression is not ending with a number"""
+def test_calculate_invalid_expression() -> None:
+    # """Returns a specific error message if input expression is not ending with a number"""
     assert calculate("1,") == "Invalid expression: '1,'"
-
-
-def test_calculate_invalid_START_comma_expression() -> None:
-    """Returns a specific error message if input expression is not ending with a number"""
     assert calculate(",1") == "Invalid expression: ',1'"
+
+
+# def test_calculate_invalid_START_comma_expression() -> None:
+#     """Returns a specific error message if input expression is not ending with a number"""
 
 
 def test_calculate_invalid_user_def_delimiter_expression() -> None:
@@ -84,21 +83,26 @@ def test_calculate_user_def_1_char_delimiter() -> None:
     assert calculate("//@\n10@20@30") == 60
 
 
-def test_calculate_negative_numbers_1() -> None:
+def test_calculate_negative_numbers() -> None:
     assert calculate("1,-2") == "negatives not allowed: -2"
-
-
-def test_calculate_negative_numbers_2() -> None:
     assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"
 
 
-def test_calculate_eq_1000() -> None:
+# def test_calculate_negative_numbers_2() -> None:
+
+
+def test_calculate_limit_integer() -> None:
     assert calculate("1000") == 1000
-
-
-def test_calculate_greater_1000() -> None:
     assert calculate("1001") == 0
-
-
-def test_calculate_less_and_great_than_1000() -> None:
     assert calculate("54,1020") == 54
+
+
+# def test_calculate_greater_1000() -> None:
+
+
+# def test_calculate_less_and_great_than_1000() -> None:
+
+
+def test_calculate_variable_length_delimiter() -> None:
+    assert calculate("//{***}\n5***20") == 25
+    # assert calculate("//{*}\n5*20") == 25

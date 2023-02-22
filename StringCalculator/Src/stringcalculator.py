@@ -39,6 +39,18 @@ def check_negative_numbers(expression: list) -> str:
         )
 
 
+def keep_lesser_than_limit(expression: list, limit: int = 1000) -> list:
+    """
+    Will return expression without integers greater than limit
+    """
+    keptIntegers = [i for i in expression if i <= limit]
+
+    if len(keptIntegers) == 0:
+        keptIntegers = [0]
+
+    return keptIntegers
+
+
 def rewrite_empty_expression(expression: list) -> bool:
     """
     returns "0" if the length of expression equals 0
@@ -69,8 +81,6 @@ def shrink_expression(expression: list) -> list:
     """
     if expression[0] == "/":
         return expression[4:]
-    else:
-        return expression
 
 
 def split_expression(expression: str, delimiter: str = ",") -> list:
@@ -94,45 +104,30 @@ def split_expression(expression: str, delimiter: str = ",") -> list:
     return list(map(int, integerSplit))
 
 
-def keep_lesser_than_limit(expression: list, limit: int = 1000) -> list:
-    """
-    Will return expression without integers greater than limit
-    """
-    keptIntegers = [i for i in expression if i <= limit]
-
-    if len(keptIntegers) == 0:
-        keptIntegers = [0]
-
-    return keptIntegers
-
-
 def calculate(expression: str) -> int:
     """
     Returns the sum of integers written in expression
     """
-    expression = list(expression)
 
     expression = rewrite_empty_expression(expression)
 
+    delimiter = ","
     if expression[0] == "/":
         delimiter = extract_delimiters(expression)
-    else:
-        delimiter = ","
+
+    expression = list(expression)
 
     try:
         check_expression_validity(expression, delimiter)
 
-        expression = shrink_expression(expression)
+        if expression[0] == "/":
+            expression = shrink_expression(expression)
 
         integerSplit = split_expression(expression, delimiter)
-
-        # print(integerSplit)
 
         check_negative_numbers(integerSplit)
 
         integerSplit = keep_lesser_than_limit(integerSplit)
-
-        # print(integerSplit)
 
         return sum(integerSplit)
 
@@ -141,6 +136,3 @@ def calculate(expression: str) -> int:
 
     except ArithmeticError as err:
         return err.args[0]
-
-
-print(calculate("1001,1000"))

@@ -20,10 +20,11 @@ def calculate(expression: str) -> int:
     """
 
     if len(expression) == 0 :
+        # Function calculate must return 0 if an empty string is given as a parameter
         return 0
     
     else :
-        parsedExpressions = parse_expression(expression)
-        integerList = converts_to_integer(parsedExpressions)
+        parsedExpression = parse_expression(expression)
+        integerList = converts_to_integer(parsedExpression)
 
     return sum(integerList)
