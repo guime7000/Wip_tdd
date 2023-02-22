@@ -1,7 +1,6 @@
-def calculate(expression: str) -> str:
-    if len(expression) == 1:
-        somme = int(expression)
-    else:
-        somme = int(expression[0]) + int(expression[2])
+def calculate(expression: str) -> int:
+    for i in range(len(expression)):
+        if expression[i] == ",":
+            return int(expression[:i]) + int(expression[i + 1 :])
 
-    return somme
+    return int(expression)
