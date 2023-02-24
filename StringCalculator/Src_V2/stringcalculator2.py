@@ -1,11 +1,11 @@
-def find_delimiter_indexes(expression: str, delimiter: str = ",") -> list:
+def find_delimiter_indexes(expression: str, delimiterList: list = [","]) -> list:
     """
     Finds the index of delimiter in the input expression
     Returns those index(es) as a list
     """
     delimiterIndex = []
     for i in range(len(expression)):
-        if expression[i] == ",":
+        if expression[i] in delimiterList:
             delimiterIndex.append(i)
     return delimiterIndex
 
@@ -14,10 +14,7 @@ def calculate(expression: str) -> int:
     if expression == "":
         return 0
 
-    if expression == "1\n2":
-        return 3
-
-    delimiterIndex = find_delimiter_indexes(expression)
+    delimiterIndex = find_delimiter_indexes(expression, [",", "\n"])
 
     if len(delimiterIndex) == 0:
         return int(expression)
