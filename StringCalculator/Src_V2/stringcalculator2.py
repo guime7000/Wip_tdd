@@ -48,19 +48,21 @@ def calculate(expression: str) -> int:
         negativeNumbersList = []
 
         for i in range(len(delimiterIndex)):
+            currentDelimiterPos = delimiterIndex[i]
             if i == len(delimiterIndex) - 1:
-                if int(expression[delimiterIndex[i] + 1 :]) > 0:
-                    totalSum = totalSum + int(expression[delimiterIndex[i] + 1 :])
+                if int(expression[currentDelimiterPos + 1 :]) > 0:
+                    totalSum = totalSum + int(expression[currentDelimiterPos + 1 :])
                 else:
-                    negativeNumbersList.append(expression[delimiterIndex[i] + 1 :])
+                    negativeNumbersList.append(expression[currentDelimiterPos + 1 :])
             else:
-                if int(expression[delimiterIndex[i] + 1 : delimiterIndex[i + 1]]) > 0:
+                nextDelimiterPos = delimiterIndex[i + 1]
+                if int(expression[currentDelimiterPos + 1 : nextDelimiterPos]) > 0:
                     totalSum = totalSum + int(
-                        expression[delimiterIndex[i] + 1 : delimiterIndex[i + 1]]
+                        expression[currentDelimiterPos + 1 : nextDelimiterPos]
                     )
                 else:
                     negativeNumbersList.append(
-                        expression[delimiterIndex[i] + 1 : delimiterIndex[i + 1]]
+                        expression[currentDelimiterPos + 1 : nextDelimiterPos]
                     )
 
         if negativeNumbersList:
