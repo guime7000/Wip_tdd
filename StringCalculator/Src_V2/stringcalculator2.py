@@ -1,4 +1,4 @@
-def find_delimiter_indexes(expression: str, delimiterList: list = [","]) -> list:
+def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -> list:
     """
     Finds the index of delimiter in the input expression
     Returns those index(es) as a list
@@ -20,7 +20,15 @@ def calculate(expression: str) -> int:
     except SyntaxError as syntaxE:
         return syntaxE.args[0]
 
-    delimiterIndex = find_delimiter_indexes(expression, [",", "\n"])
+    if expression[0] == "/":
+        delimiterList = [expression[2]] + ["\n"]
+        expression = expression[4:]
+        print(expression)
+
+    else:
+        delimiterList = [",", "\n"]
+
+    delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
     if len(delimiterIndex) == 0:
         return int(expression)
@@ -36,3 +44,6 @@ def calculate(expression: str) -> int:
             )
 
     return totalSum
+
+
+calculate("//;\n1")

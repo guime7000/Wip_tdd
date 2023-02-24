@@ -39,3 +39,4 @@ def test_calculate_check_validity() -> None:
 
 def test_1_char_user_delimiter() -> None:
     assert calculate("//;\n1;2") == 3
+    assert calculate("//@\n10@20@30") == 60
