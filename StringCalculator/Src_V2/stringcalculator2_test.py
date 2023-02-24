@@ -46,3 +46,4 @@ def test_1_char_user_delimiter() -> None:
 
 def test_calculate_detect_negatives() -> None:
     assert calculate("1,-2") == "negatives not allowed: -2"
+    assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"
