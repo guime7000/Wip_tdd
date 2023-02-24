@@ -35,8 +35,10 @@ def test_calculate_with_new_lines() -> None:
 
 def test_calculate_check_validity() -> None:
     assert calculate("1,") == "Invalid expression : '1,'"
+    assert calculate("//;\n102,5") == "Invalid expression : '//;\n102,5'"
 
 
 def test_1_char_user_delimiter() -> None:
     assert calculate("//;\n1;2") == 3
+    assert calculate("//;\n1;2\n3") == 6
     assert calculate("//@\n10@20@30") == 60

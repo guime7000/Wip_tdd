@@ -5,6 +5,8 @@ def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -
     """
     delimiterIndex = []
     for i in range(len(expression)):
+        if not expression[i].isdigit() and expression[i] not in delimiterList:
+            raise SyntaxError((f"Invalid expression : '{expression}'"))
         if expression[i] in delimiterList:
             delimiterIndex.append(i)
     return delimiterIndex
@@ -14,19 +16,26 @@ def calculate(expression: str) -> int:
     if expression == "":
         return 0
 
+    delimiterList = [",", "\n"]
+
     try:
         if expression[0] == "," or expression[-1] == ",":
             raise SyntaxError(f"Invalid expression : '{expression}'")
+
+        if expression[0] == "/":
+            delimiterList = [expression[2]] + ["\n"]
+            print(delimiterList)
+            for i in range(4, len(expression)):
+                print(expression[i])
+                if (expression[i].isdigit() == False) and (
+                    expression[i] not in delimiterList
+                ):
+                    raise SyntaxError((f"Invalid expression : '{expression}'"))
+
+            expression = expression[4:]
+
     except SyntaxError as syntaxE:
         return syntaxE.args[0]
-
-    if expression[0] == "/":
-        delimiterList = [expression[2]] + ["\n"]
-        expression = expression[4:]
-        print(expression)
-
-    else:
-        delimiterList = [",", "\n"]
 
     delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
@@ -46,4 +55,4 @@ def calculate(expression: str) -> int:
     return totalSum
 
 
-calculate("//;\n1")
+calculate("//;\n102,5")
