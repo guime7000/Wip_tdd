@@ -25,3 +25,7 @@ def test_calculate_3_nb() -> None:
 
 def test_calculate_4_nb() -> None:
     assert calculate("1,2,4,100") == 107
+
+
+def test_calculate_with_new_lines() -> None:
+    assert calculate("1\n2") == 3
