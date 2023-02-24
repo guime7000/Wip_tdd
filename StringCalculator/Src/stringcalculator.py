@@ -14,14 +14,19 @@ def check_expression_validity(expression: list, delimiter: str = ",") -> str:
 
     # Checks if there is only user specified 1 char long delimiter in expression
     if expression[0] == "/":
-        for digit in expression[4:]:
-            if (
-                (str.isdigit(digit) == False)
-                and (ord(digit) != 10)
-                and (digit != delimiter)
-            ):
-                print(digit)
-                raise SyntaxError(f"Invalid expression: '{str(''.join(expression))}'")
+        if len(delimiter) == 1:
+            for digit in expression[4:]:
+                if (
+                    (str.isdigit(digit) == False)
+                    and (ord(digit) != 10)
+                    and (digit != delimiter)
+                ):
+                    raise SyntaxError(
+                        f"Invalid expression: '{str(''.join(expression))}'"
+                    )
+        # else :
+        #     for i range(5+len(delimiter),len(expression)-3):
+        #         if
 
 
 def check_negative_numbers(expression: list) -> str:
@@ -64,19 +69,23 @@ def rewrite_empty_expression(expression: list) -> bool:
 
 def extract_delimiters(expression: str) -> str:
     """
-    Extracts one or more user specified delimiter(s) from the input expression
-    and rewrites expression by replacing user defined delimiters by commas
+    Finds the Delimiter pattern to be used in the expression
+    Returns the pattern
     """
     # calculate("//{***}\n5***20") == 25
     if expression[2] == "{":
-        delimiter = "***"
+        delimiter = ""
+        for elem in expression[3:]:
+            if elem != "}":
+                # break
+                delimiter += elem
     else:
         delimiter = expression[2]
 
     return delimiter
 
 
-def shrink_expression(expression: list) -> list:
+def shrink_expression(expression: list, delimiter: str = ",") -> list:
     """
     Rewrites input expression if a user specified delimiter is given by popping out
     delimiter definition :
@@ -84,7 +93,11 @@ def shrink_expression(expression: list) -> list:
     "//@\n1@2" becomes "1@2"
     """
     if expression[0] == "/":
-        return expression[4:]
+        if len(delimiter) == 1:
+            print("BOB: ", expression[4:])
+            return expression[4:]
+        else:
+            return expression[6 + len(delimiter) :]
 
 
 def split_expression(expression: str, delimiter: str = ",") -> list:
@@ -120,12 +133,21 @@ def calculate(expression: str) -> int:
         delimiter = extract_delimiters(expression)
 
     expression = list(expression)
+    # delimiterLength = len(delimiter)
 
     try:
         check_expression_validity(expression, delimiter)
-
+        print(expression, "DELIMITER:", delimiter)
+        print("-----------")
+        print(delimiter)
         if expression[0] == "/":
-            expression = shrink_expression(expression)
+            i = 0
+            while expression[i] != "\n":
+                i += 1
+            expression = expression[i + 1 :]
+            print("Bob", expression)
+
+            # expression = shrink_expression(expression, delimiter)
 
         integerSplit = split_expression(expression, delimiter)
 
@@ -140,3 +162,6 @@ def calculate(expression: str) -> int:
 
     except ArithmeticError as err:
         return err.args[0]
+
+
+print(calculate("//{*}\n5*20"))

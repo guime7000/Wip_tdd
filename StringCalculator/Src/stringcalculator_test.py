@@ -1,25 +1,17 @@
 from stringcalculator import (
     extract_delimiters,
-    check_expression_validity,
+    shrink_expression,
     rewrite_empty_expression,
     split_expression,
     calculate,
 )
 
 
-# ############# check_expresssion_validity ######################
-# def test_check_expresssion_validity() -> None:
-#     assert check_expresssion_validity("1,") == "Invalid expression"  # : '1,'"
-
-
 ############## rewrite_empty_expression #######################
 def test_rewrite_empty_expression() -> None:
-    """Returns "0" if input is an empty string"""
+    # Returns "0" if input is an empty string
     assert rewrite_empty_expression("") == "0"
-
-
-def test_rewrite_empty_expression() -> None:
-    """Doesn't do anything to input if input string's length > 0"""
+    # Doesn't do anything to input if input string's length > 0
     assert rewrite_empty_expression("123,456") == "123,456"
 
 
@@ -40,10 +32,6 @@ def test_calculate_empty_string() -> None:
 def test_calculate_1_Arg() -> None:
     assert calculate("0") == 0
     assert calculate("123") == 123
-
-
-# def test_calculate_1_Arg_eq_123() -> None:
-#     """1 argument equals to 123 returns 123"""
 
 
 def test_calculate_2_comma_sep_Args() -> None:
@@ -67,13 +55,8 @@ def test_calculate_several_lines() -> None:
 
 
 def test_calculate_invalid_expression() -> None:
-    # """Returns a specific error message if input expression is not ending with a number"""
     assert calculate("1,") == "Invalid expression: '1,'"
     assert calculate(",1") == "Invalid expression: ',1'"
-
-
-# def test_calculate_invalid_START_comma_expression() -> None:
-#     """Returns a specific error message if input expression is not ending with a number"""
 
 
 def test_calculate_invalid_user_def_delimiter_expression() -> None:
@@ -89,23 +72,20 @@ def test_calculate_negative_numbers() -> None:
     assert calculate("5,-4,1,-2") == "negatives not allowed: -4, -2"
 
 
-# def test_calculate_negative_numbers_2() -> None:
-
-
 def test_calculate_limit_integer() -> None:
     assert calculate("1000") == 1000
     assert calculate("1001") == 0
     assert calculate("54,1020") == 54
 
 
-# def test_calculate_greater_1000() -> None:
-
-
-# def test_calculate_less_and_great_than_1000() -> None:
-
-
 def test_extract_delimiters() -> None:
+    assert extract_delimiters("//@\n1@2") == "@"
     assert extract_delimiters("//{***}\n5***20") == "***"
+
+
+def test_shrink_expression() -> None:
+    assert shrink_expression("//@\n1@2") == "1@2"
+    # assert shrink_expression("//{@@@}\n1@@@2@@@3") == "1@@@2@@@3"
 
 
 def test_calculate_variable_length_delimiter() -> None:
