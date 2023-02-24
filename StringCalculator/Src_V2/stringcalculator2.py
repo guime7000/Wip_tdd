@@ -14,6 +14,12 @@ def calculate(expression: str) -> int:
     if expression == "":
         return 0
 
+    try:
+        if expression[0] == "," or expression[-1] == ",":
+            raise SyntaxError(f"Invalid expression : '{expression}'")
+    except SyntaxError as syntaxE:
+        return syntaxE.args[0]
+
     delimiterIndex = find_delimiter_indexes(expression, [",", "\n"])
 
     if len(delimiterIndex) == 0:
