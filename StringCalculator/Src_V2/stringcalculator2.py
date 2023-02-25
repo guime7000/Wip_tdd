@@ -24,12 +24,27 @@ def calculate(expression: str) -> int:
 
     try:
         if expression[0] == "," or expression[-1] == ",":
-            print("BBBOOOOOOOOB3")
             raise SyntaxError(f"Invalid expression : '{expression}'")
 
         if expression[0] == "/":
-            delimiterList = [expression[2]] + ["\n"]
-            for i in range(4, len(expression)):
+            if expression[0:3] == "//{":
+                userDelimiter = ""
+                for digit in expression[3:]:
+                    if digit != "}":
+                        userDelimiter += userDelimiter + digit
+                    if digit == "\n":
+                        break
+                delimiterList = [userDelimiter] + ["\n"]
+                startIndex = 5 + len(userDelimiter)
+
+                # if expression[3:6] == "***":
+                #     return 25
+
+            else:
+                delimiterList = [expression[2]] + ["\n"]
+                startIndex = 4
+
+            for i in range(startIndex, len(expression)):
                 if (
                     (not expression[i].isdigit())
                     and (expression[i] not in delimiterList)
