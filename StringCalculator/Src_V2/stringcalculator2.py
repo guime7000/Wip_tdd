@@ -33,7 +33,7 @@ def negatives_integer_error_handling(negativeNumbersList: list):
     raise ArithmeticError(f"negatives not allowed: {', '.join(negativeNumbersList)}")
 
 
-def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -> list:
+def find_delimiter_indexes(expression: str, delimiterList: list) -> list:
     """
     Finds the index of delimiter in the input expression
     Returns those index(es) as a list
@@ -48,24 +48,27 @@ def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -
 
 def parse_delimiters(expression: str, digitPosition: int) -> tuple:
     """
-    Locates user defined delimiters and returns it with the expression start index
+    Locates user defined delimiters and
+    returns them with the index of integer expression start (i.e epresssion index without delimiters definition)
     """
     userDelimiter = ""
-    delimiterList = ["\n"]
+    delimiterList = []
 
     for digit in expression[digitPosition:]:
         digitPosition += 1
-        if digit == "\n":
-            break
-        if digit != "}":
+        if digit == "}":
+            delimiterList = delimiterList + [userDelimiter]
+            userDelimiter = ""
+        else:
+            if digit == "\n":
+                if digitPosition == 4:
+                    delimiterList = delimiterList + [userDelimiter]
+                break
             if digit != "{":
                 userDelimiter += digit
-            else:
-                userDelimiter = ""
-
-        delimiterList = [userDelimiter] + delimiterList
 
     expressionStartIndex = digitPosition
+    delimiterList.append("\n")
 
     return (delimiterList, expressionStartIndex)
 
@@ -73,8 +76,6 @@ def parse_delimiters(expression: str, digitPosition: int) -> tuple:
 def calculate(expression: str) -> int:
     if expression == "":
         return 0
-
-    # delimiterList = ["\n"]
 
     try:
         # Syntax error handling (bad beginning or end character inside expression)
@@ -84,20 +85,23 @@ def calculate(expression: str) -> int:
             # We re in a user defined delimiter case !
             currentDigitPosition = 2
             if expression[currentDigitPosition] == "{":
+                # The user defined delimiter's length is greater than 1
                 currentDigitPosition += 1
 
             delimiterList, expressionStartIndex = parse_delimiters(
                 expression, currentDigitPosition
             )
-            # Bad delimiter error check
-            invalid_delimiter_error_handling(
-                expression, delimiterList, expressionStartIndex
-            )
+
+            # Bad delimiter error check if delimiter is 1 char long
+            if expression[2] != "{":
+                invalid_delimiter_error_handling(
+                    expression, delimiterList, expressionStartIndex
+                )
 
             expression = expression[expressionStartIndex:]
 
         else:
-            delimiterList = ["\n", ","]
+            delimiterList = [",", "\n"]
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
@@ -117,6 +121,11 @@ def calculate(expression: str) -> int:
                 rightFromDelimiter = int(
                     expression[currentDelimiterPos + len(delimiterList[0]) :]
                 )
+                # rightFromDelimiter = int(
+                #     expression[
+                #         currentDelimiterPos + len(delimiterList[currentDelimiterPos]) :
+                #     ]
+                # )
                 if rightFromDelimiter >= 0:
                     if rightFromDelimiter > 1000:
                         rightFromDelimiter = 0
@@ -135,6 +144,7 @@ def calculate(expression: str) -> int:
                     totalSum = totalSum + int(
                         expression[currentDelimiterPos + 1 : nextDelimiterPos]
                     )
+
                 else:
                     negativeNumbersList.append(
                         expression[currentDelimiterPos + 1 : nextDelimiterPos]
@@ -152,8 +162,3 @@ def calculate(expression: str) -> int:
         return arithmE.args[0]
 
     return totalSum
-
-
-calculate("//;\n1;2\n3")
-# calculate("//{;}\n102;5")
-# calculate("//{***}\n5***20")
