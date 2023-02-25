@@ -5,16 +5,38 @@ def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -
     """
     delimiterIndex = []
     for i in range(len(expression)):
-        # if (
-        #     not expression[i].isdigit()
-        #     and expression[i] not in delimiterList
-        #     and expression[i] != "-"
-        # ):
-        #     raise SyntaxError((f"Invalid expression : '{expression}'"))
         if expression[i : i + len(delimiterList[0])] in delimiterList:
             delimiterIndex.append(i)
 
     return delimiterIndex
+
+
+def expression_syntax_error_handling(expression: str) -> SyntaxError:
+    """
+    Raises SyntaxError if expression does not start with a number and ends up with a number.
+    """
+    if expression[0] == "," or expression[-1] == ",":
+        raise SyntaxError(f"Invalid expression : '{expression}'")
+
+
+def expression_invalid_separator_error_handling(
+    expression: str, delimiterList: list, startIndex: int
+) -> SyntaxError:
+    """
+    Raises Syntax error if expression contains some delimiter different frome the ones defined
+    """
+    i = startIndex
+    while i < len(expression):
+        if (
+            not expression[i].isdigit()
+            and expression[i : i + len(delimiterList[0])] not in delimiterList
+        ):
+            if expression[i] == delimiterList[0][0]:
+                i += len(delimiterList[0])
+            else:
+                raise SyntaxError((f"Invalid expression : '{expression}'"))
+        else:
+            i += 1
 
 
 def calculate(expression: str) -> int:
@@ -24,9 +46,10 @@ def calculate(expression: str) -> int:
     delimiterList = [",", "\n"]
 
     try:
-        if expression[0] == "," or expression[-1] == ",":
-            raise SyntaxError(f"Invalid expression : '{expression}'")
+        # Syntax error handling (bad beginning or end character inside expression)
+        expression_syntax_error_handling(expression)
 
+        # User defined Delimiter parsing
         if expression[0] == "/":
             userDelimiter = ""
             if expression[0:3] == "//{":
@@ -38,41 +61,32 @@ def calculate(expression: str) -> int:
                 delimiterList = [userDelimiter] + ["\n"]
                 startIndex = 5 + len(delimiterList[0])
 
-                i = startIndex
-                while i < len(expression):
-                    # for i in range(startIndex, len(expression)):
-                    if expression[i] == delimiterList[0][0]:
-                        if (
-                            expression[i : i + len(delimiterList[0])]
-                            not in delimiterList
-                        ):
-                            raise SyntaxError((f"Invalid expression : '{expression}'"))
-                        i += 3
-                    else:
-                        i += 1
+                expression_invalid_separator_error_handling(
+                    expression, delimiterList, startIndex
+                )
 
             else:
                 userDelimiter += expression[2]
                 delimiterList = [userDelimiter] + ["\n"]
+                print(expression)
+                print(delimiterList)
                 startIndex = 3 + len(delimiterList[0])
 
-                for i in range(startIndex, len(expression)):
-                    if (
-                        (not expression[i].isdigit())
-                        and (expression[i] not in delimiterList)
-                        and expression[i] != "-"
-                    ):
-                        raise SyntaxError((f"Invalid expression : '{expression}'"))
+                expression_invalid_separator_error_handling(
+                    expression, delimiterList, startIndex
+                )
 
             expression = expression[startIndex:]
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
-        if len(delimiterIndex) == 0:
+        # Default delimiter with checking of integers over 1000
+        if not delimiterIndex:
             if int(expression) > 1000:
                 expression = "0"
             return int(expression)
 
+        # Sum calculation
         totalSum = int(expression[: delimiterIndex[0]])
         negativeNumbersList = []
 
@@ -121,4 +135,5 @@ def calculate(expression: str) -> int:
     return totalSum
 
 
-calculate("//{***}\n5***20")
+calculate("//;\n102,5")
+# calculate("//{***}\n5***20")
