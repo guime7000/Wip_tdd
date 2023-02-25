@@ -1,3 +1,38 @@
+def syntax_error_handling(expression: str) -> SyntaxError:
+    """
+    Raises SyntaxError if expression does not start with a number and ends up with a number.
+    """
+    if expression[0] == "," or expression[-1] == ",":
+        raise SyntaxError(f"Invalid expression : '{expression}'")
+
+
+def invalid_delimiter_error_handling(
+    expression: str, delimiterList: list, startIndex: int
+) -> SyntaxError:
+    """
+    Raises Syntax error if expression contains some delimiter different frome the ones defined
+    """
+    i = startIndex
+    while i < len(expression):
+        if (
+            not expression[i].isdigit()
+            and expression[i : i + len(delimiterList[0])] not in delimiterList
+        ):
+            if expression[i] == delimiterList[0][0]:
+                i += len(delimiterList[0])
+            else:
+                raise SyntaxError((f"Invalid expression : '{expression}'"))
+        else:
+            i += 1
+
+
+def negatives_integer_error_handling(negativeNumbersList: list):
+    """
+    Raises an ArithmeticError if negative integers are in the expression
+    """
+    raise ArithmeticError(f"negatives not allowed: {', '.join(negativeNumbersList)}")
+
+
 def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -> list:
     """
     Finds the index of delimiter in the input expression
@@ -9,35 +44,6 @@ def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -
             delimiterIndex.append(i)
 
     return delimiterIndex
-
-
-def expression_syntax_error_handling(expression: str) -> SyntaxError:
-    """
-    Raises SyntaxError if expression does not start with a number and ends up with a number.
-    """
-    if expression[0] == "," or expression[-1] == ",":
-        raise SyntaxError(f"Invalid expression : '{expression}'")
-
-
-def expression_invalid_separator_error_handling(
-    expression: str, delimiterList: list, startIndex: int
-) -> SyntaxError:
-    """
-    Raises Syntax error if expression contains some delimiter different frome the ones defined
-    """
-    i = startIndex
-    while i < len(expression):
-        print("Func:", i, expression[i], delimiterList)
-        if (
-            not expression[i].isdigit()
-            and expression[i : i + len(delimiterList[0])] not in delimiterList
-        ):
-            if expression[i] == delimiterList[0][0]:
-                i += len(delimiterList[0])
-            else:
-                raise SyntaxError((f"Invalid expression : '{expression}'"))
-        else:
-            i += 1
 
 
 def parse_delimiters(expression: str, digitPosition: int) -> tuple:
@@ -68,12 +74,13 @@ def calculate(expression: str) -> int:
 
     try:
         # Syntax error handling (bad beginning or end character inside expression)
-        expression_syntax_error_handling(expression)
+        syntax_error_handling(expression)
 
         # User defined Delimiter parsing
         userDelimiter = ""
 
         if expression[0:2] == "//":
+            # We re in a user defined delimiter case !
             currentDigitPosition = 2
             if expression[currentDigitPosition] == "{":
                 currentDigitPosition += 1
@@ -81,18 +88,8 @@ def calculate(expression: str) -> int:
             delimiterList, expressionStartIndex = parse_delimiters(
                 expression, currentDigitPosition
             )
-
-            # for digit in expression[currentDigitPosition:]:
-            #     currentDigitPosition += 1
-            #     if digit == "\n":
-            #         break
-            #     if digit != "}":
-            #         userDelimiter += digit
-
-            # delimiterList = [userDelimiter] + delimiterList
-            # expressionStartIndex = currentDigitPosition
-
-            expression_invalid_separator_error_handling(
+            # Bad delimiter error check
+            invalid_delimiter_error_handling(
                 expression, delimiterList, expressionStartIndex
             )
 
@@ -102,7 +99,7 @@ def calculate(expression: str) -> int:
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
-        # Default delimiter with checking of integers over 1000
+        # Checking for integers over 1000
         if not delimiterIndex:
             if int(expression) > 1000:
                 expression = "0"
@@ -142,9 +139,7 @@ def calculate(expression: str) -> int:
                     )
 
         if negativeNumbersList:
-            raise ArithmeticError(
-                f"negatives not allowed: {', '.join(negativeNumbersList)}"
-            )
+            negatives_integer_error_handling(negativeNumbersList)
 
     except SyntaxError as syntaxE:
         print(syntaxE.args[0])
