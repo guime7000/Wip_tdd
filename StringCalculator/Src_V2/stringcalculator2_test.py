@@ -51,3 +51,6 @@ def test_calculate_detect_negatives() -> None:
 
 def test_calculate_upon_limit() -> None:
     assert calculate("1001") == 0
+    assert calculate("1000") == 1000
+    assert calculate("54,1000") == 1054
+    assert calculate("54,1001") == 54

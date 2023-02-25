@@ -42,6 +42,8 @@ def calculate(expression: str) -> int:
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
         if len(delimiterIndex) == 0:
+            if int(expression) > 1000:
+                expression = "0"
             return int(expression)
 
         totalSum = int(expression[: delimiterIndex[0]])
@@ -50,13 +52,22 @@ def calculate(expression: str) -> int:
         for i in range(len(delimiterIndex)):
             currentDelimiterPos = delimiterIndex[i]
             if i == len(delimiterIndex) - 1:
-                if int(expression[currentDelimiterPos + 1 :]) > 0:
-                    totalSum = totalSum + int(expression[currentDelimiterPos + 1 :])
+                rightFromDelimiter = int(expression[currentDelimiterPos + 1 :])
+                if rightFromDelimiter > 0:
+                    if rightFromDelimiter > 1000:
+                        rightFromDelimiter = 0
+                    totalSum = totalSum + rightFromDelimiter
                 else:
                     negativeNumbersList.append(expression[currentDelimiterPos + 1 :])
             else:
                 nextDelimiterPos = delimiterIndex[i + 1]
                 if int(expression[currentDelimiterPos + 1 : nextDelimiterPos]) > 0:
+                    if (
+                        int(expression[currentDelimiterPos + 1 : nextDelimiterPos])
+                        > 1000
+                    ):
+                        expression[currentDelimiterPos + 1 : nextDelimiterPos] = 0
+
                     totalSum = totalSum + int(
                         expression[currentDelimiterPos + 1 : nextDelimiterPos]
                     )
