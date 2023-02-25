@@ -54,3 +54,7 @@ def test_calculate_upon_limit() -> None:
     assert calculate("1000") == 1000
     assert calculate("54,1000") == 1054
     assert calculate("54,1001") == 54
+
+
+def test_1_variable_size_delimiter() -> None:
+    assert calculate("//{***}\n5***20") == 25
