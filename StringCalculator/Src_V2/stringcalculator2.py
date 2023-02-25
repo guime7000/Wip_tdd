@@ -58,9 +58,13 @@ def parse_delimiters(expression: str, digitPosition: int) -> tuple:
         if digit == "\n":
             break
         if digit != "}":
-            userDelimiter += digit
+            if digit != "{":
+                userDelimiter += digit
+            else:
+                userDelimiter = ""
 
-    delimiterList = [userDelimiter] + delimiterList
+        delimiterList = [userDelimiter] + delimiterList
+
     expressionStartIndex = digitPosition
 
     return (delimiterList, expressionStartIndex)
@@ -70,14 +74,11 @@ def calculate(expression: str) -> int:
     if expression == "":
         return 0
 
-    delimiterList = ["\n"]
+    # delimiterList = ["\n"]
 
     try:
         # Syntax error handling (bad beginning or end character inside expression)
         syntax_error_handling(expression)
-
-        # User defined Delimiter parsing
-        userDelimiter = ""
 
         if expression[0:2] == "//":
             # We re in a user defined delimiter case !
@@ -95,7 +96,8 @@ def calculate(expression: str) -> int:
 
             expression = expression[expressionStartIndex:]
 
-        delimiterList = delimiterList + [","]
+        else:
+            delimiterList = ["\n", ","]
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
