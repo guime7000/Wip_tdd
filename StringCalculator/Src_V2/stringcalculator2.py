@@ -27,6 +27,7 @@ def expression_invalid_separator_error_handling(
     """
     i = startIndex
     while i < len(expression):
+        print("Func:", i, expression[i], delimiterList)
         if (
             not expression[i].isdigit()
             and expression[i : i + len(delimiterList[0])] not in delimiterList
@@ -43,40 +44,52 @@ def calculate(expression: str) -> int:
     if expression == "":
         return 0
 
-    delimiterList = [",", "\n"]
+    delimiterList = ["\n"]
 
     try:
         # Syntax error handling (bad beginning or end character inside expression)
         expression_syntax_error_handling(expression)
 
         # User defined Delimiter parsing
-        if expression[0] == "/":
-            userDelimiter = ""
-            if expression[0:3] == "//{":
-                for digit in expression[3:]:
+        userDelimiter = ""
+
+        if expression[0:2] == "//":
+            currentDigitPosition = 2
+            if expression[currentDigitPosition] == "{":
+                currentDigitPosition += 1
+
+                for digit in expression[currentDigitPosition:]:
+                    currentDigitPosition += 1
                     if digit == "\n":
                         break
                     if digit != "}":
                         userDelimiter += digit
+
                 delimiterList = [userDelimiter] + ["\n"]
-                startIndex = 5 + len(delimiterList[0])
+                startIndex = currentDigitPosition
 
                 expression_invalid_separator_error_handling(
                     expression, delimiterList, startIndex
                 )
 
             else:
-                userDelimiter += expression[2]
+                for digit in expression[currentDigitPosition:]:
+                    currentDigitPosition += 1
+                    if digit == "\n":
+                        break
+                    if digit != "}":
+                        userDelimiter += digit
+
                 delimiterList = [userDelimiter] + ["\n"]
-                print(expression)
-                print(delimiterList)
-                startIndex = 3 + len(delimiterList[0])
+                startIndex = currentDigitPosition
 
                 expression_invalid_separator_error_handling(
                     expression, delimiterList, startIndex
                 )
 
             expression = expression[startIndex:]
+
+        delimiterList = delimiterList + [","]
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
@@ -135,5 +148,6 @@ def calculate(expression: str) -> int:
     return totalSum
 
 
-calculate("//;\n102,5")
+calculate("//;\n1;2\n3")
+# calculate("//{;}\n102;5")
 # calculate("//{***}\n5***20")
