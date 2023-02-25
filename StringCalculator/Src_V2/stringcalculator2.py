@@ -40,6 +40,26 @@ def expression_invalid_separator_error_handling(
             i += 1
 
 
+def parse_delimiters(expression: str, digitPosition: int) -> tuple:
+    """
+    Locates user defined delimiters and returns it with the expression start index
+    """
+    userDelimiter = ""
+    delimiterList = ["\n"]
+
+    for digit in expression[digitPosition:]:
+        digitPosition += 1
+        if digit == "\n":
+            break
+        if digit != "}":
+            userDelimiter += digit
+
+    delimiterList = [userDelimiter] + delimiterList
+    expressionStartIndex = digitPosition
+
+    return (delimiterList, expressionStartIndex)
+
+
 def calculate(expression: str) -> int:
     if expression == "":
         return 0
@@ -58,36 +78,25 @@ def calculate(expression: str) -> int:
             if expression[currentDigitPosition] == "{":
                 currentDigitPosition += 1
 
-                for digit in expression[currentDigitPosition:]:
-                    currentDigitPosition += 1
-                    if digit == "\n":
-                        break
-                    if digit != "}":
-                        userDelimiter += digit
+            delimiterList, expressionStartIndex = parse_delimiters(
+                expression, currentDigitPosition
+            )
 
-                delimiterList = [userDelimiter] + ["\n"]
-                startIndex = currentDigitPosition
+            # for digit in expression[currentDigitPosition:]:
+            #     currentDigitPosition += 1
+            #     if digit == "\n":
+            #         break
+            #     if digit != "}":
+            #         userDelimiter += digit
 
-                expression_invalid_separator_error_handling(
-                    expression, delimiterList, startIndex
-                )
+            # delimiterList = [userDelimiter] + delimiterList
+            # expressionStartIndex = currentDigitPosition
 
-            else:
-                for digit in expression[currentDigitPosition:]:
-                    currentDigitPosition += 1
-                    if digit == "\n":
-                        break
-                    if digit != "}":
-                        userDelimiter += digit
+            expression_invalid_separator_error_handling(
+                expression, delimiterList, expressionStartIndex
+            )
 
-                delimiterList = [userDelimiter] + ["\n"]
-                startIndex = currentDigitPosition
-
-                expression_invalid_separator_error_handling(
-                    expression, delimiterList, startIndex
-                )
-
-            expression = expression[startIndex:]
+            expression = expression[expressionStartIndex:]
 
         delimiterList = delimiterList + [","]
 
