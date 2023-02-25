@@ -5,14 +5,15 @@ def find_delimiter_indexes(expression: str, delimiterList: list = [",", "\n"]) -
     """
     delimiterIndex = []
     for i in range(len(expression)):
-        if (
-            not expression[i].isdigit()
-            and expression[i] not in delimiterList
-            and expression[i] != "-"
-        ):
-            raise SyntaxError((f"Invalid expression : '{expression}'"))
-        if expression[i] in delimiterList:
+        # if (
+        #     not expression[i].isdigit()
+        #     and expression[i] not in delimiterList
+        #     and expression[i] != "-"
+        # ):
+        #     raise SyntaxError((f"Invalid expression : '{expression}'"))
+        if expression[i : i + len(delimiterList[0])] in delimiterList:
             delimiterIndex.append(i)
+
     return delimiterIndex
 
 
@@ -27,32 +28,43 @@ def calculate(expression: str) -> int:
             raise SyntaxError(f"Invalid expression : '{expression}'")
 
         if expression[0] == "/":
+            userDelimiter = ""
             if expression[0:3] == "//{":
-                userDelimiter = ""
                 for digit in expression[3:]:
-                    if digit != "}":
-                        userDelimiter += userDelimiter + digit
                     if digit == "\n":
                         break
+                    if digit != "}":
+                        userDelimiter += digit
                 delimiterList = [userDelimiter] + ["\n"]
-                startIndex = 5 + len(userDelimiter)
+                startIndex = 5 + len(delimiterList[0])
 
-                # if expression[3:6] == "***":
-                #     return 25
+                i = startIndex
+                while i < len(expression):
+                    # for i in range(startIndex, len(expression)):
+                    if expression[i] == delimiterList[0][0]:
+                        if (
+                            expression[i : i + len(delimiterList[0])]
+                            not in delimiterList
+                        ):
+                            raise SyntaxError((f"Invalid expression : '{expression}'"))
+                        i += 3
+                    else:
+                        i += 1
 
             else:
-                delimiterList = [expression[2]] + ["\n"]
-                startIndex = 4
+                userDelimiter += expression[2]
+                delimiterList = [userDelimiter] + ["\n"]
+                startIndex = 3 + len(delimiterList[0])
 
-            for i in range(startIndex, len(expression)):
-                if (
-                    (not expression[i].isdigit())
-                    and (expression[i] not in delimiterList)
-                    and expression[i] != "-"
-                ):
-                    raise SyntaxError((f"Invalid expression : '{expression}'"))
+                for i in range(startIndex, len(expression)):
+                    if (
+                        (not expression[i].isdigit())
+                        and (expression[i] not in delimiterList)
+                        and expression[i] != "-"
+                    ):
+                        raise SyntaxError((f"Invalid expression : '{expression}'"))
 
-            expression = expression[4:]
+            expression = expression[startIndex:]
 
         delimiterIndex = find_delimiter_indexes(expression, delimiterList)
 
@@ -67,8 +79,10 @@ def calculate(expression: str) -> int:
         for i in range(len(delimiterIndex)):
             currentDelimiterPos = delimiterIndex[i]
             if i == len(delimiterIndex) - 1:
-                rightFromDelimiter = int(expression[currentDelimiterPos + 1 :])
-                if rightFromDelimiter > 0:
+                rightFromDelimiter = int(
+                    expression[currentDelimiterPos + len(delimiterList[0]) :]
+                )
+                if rightFromDelimiter >= 0:
                     if rightFromDelimiter > 1000:
                         rightFromDelimiter = 0
                     totalSum = totalSum + rightFromDelimiter
@@ -107,4 +121,4 @@ def calculate(expression: str) -> int:
     return totalSum
 
 
-calculate("1,-2")
+calculate("//{***}\n5***20")
